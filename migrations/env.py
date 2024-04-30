@@ -2,7 +2,7 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 from alembic import context
 from settings import settings
-from settings.models import Base
+from models.taco import Base
 
 # My code
 # import os,sys

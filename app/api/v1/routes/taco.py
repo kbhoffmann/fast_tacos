@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from fastapi_sqlalchemy import db
-from settings.models import Taco as ModelTaco
+from models.taco import Taco as ModelTaco
 from schema import Taco as SchemaTaco
+from sqlalchemy import func
 
 
 taco_router = APIRouter(prefix="/tacos")
@@ -25,12 +26,18 @@ def get_taco_by_id(taco_id: int):
 
 @taco_router.post("/")
 def create_taco(taco: SchemaTaco):
+    existing_taco = get_existing_taco(taco.protein, taco.tortilla, taco.has_guac)
+
+    if existing_taco:
+        raise HTTPException(status_code=400, detail="Taco not created. This taco already exists!")
+
     new_taco = ModelTaco(
         protein=taco.protein.capitalize(),
         tortilla=taco.tortilla.capitalize(),
         price=taco.price,
         has_guac=taco.has_guac
     )
+
     db.session.add(new_taco)
     db.session.commit()
     message = {"message": f"Taco created successfully"}
@@ -62,3 +69,12 @@ def delete_taco(taco_id: int):
     db.session.delete(db_taco)
     db.session.commit()
     return {"message": f"Taco with ID {taco_id}, has been successfully deleted" }
+
+
+def get_existing_taco(protein: str, tortilla: str, has_guac: bool):
+    protein_lower = protein.lower()
+    return db.session.query(ModelTaco).filter(
+        func.lower(ModelTaco.protein) == protein_lower,
+        ModelTaco.tortilla == tortilla.capitalize(),  # Ensure case-insensitive comparison
+        ModelTaco.has_guac == has_guac
+    ).first()
