@@ -1,8 +1,10 @@
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config, pool
+
+from sqlalchemy import engine_from_config
+from sqlalchemy import pool
+from models.taco import Base
 from alembic import context
 from settings import settings
-from models.taco import Base
 
 # My code
 # import os,sys
@@ -17,11 +19,13 @@ from models.taco import Base
 config = context.config
 
 #  Making a connection
-config.set_main_option("sqlalchemy.url", settings.DATABASE.SQLALCHEMY_DATABASE_URL)
+# config.set_main_option("sqlalchemy.url", settings.DATABASE.SQLALCHEMY_DATABASE_URL)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
+
+config.set_main_option("sqlalchemy.url", settings.DATABASE.SQLALCHEMY_DATABASE_URL)
 
 # import models
 # target_metadata = models.Base.metadata

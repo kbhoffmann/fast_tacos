@@ -1,17 +1,15 @@
 from pydantic_settings import BaseSettings
-from typing import ClassVar
-from dotenv import load_dotenv
-import os
-
-# Load environment variables from the .env file
-load_dotenv(dotenv_path="./env_files/.env")
+from typing import Any
+from .base import env
 
 class DatabaseSettings(BaseSettings):
-        SQLALCHEMY_DATABASE_URL: str = ("postgresql://{}:{}@{}/{}".format(
-            os.getenv("PG_USERNAME"),
-            os.getenv("PG_PASSWORD"),
-            os.getenv("PG_HOST"),
-            os.getenv("PG_DATABASE")
+#   SQLALCHEMY_DATABASE_URL: str = ("postgresql://postgres:password@taco_db:5432/taco_database")
+        SQLALCHEMY_DATABASE_URL: str = ("postgresql://{}:{}@{}:{}/{}".format(
+            env.str("PG_USERNAME"),
+            env.str("PG_PASSWORD"),
+            env.str("PG_HOST"),
+            env.str("PG_PORT", 5432),
+            env.str("PG_DATABASE")
         )
     )
 
