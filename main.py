@@ -8,7 +8,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"🌮 Are you hungry for some Tacos?! 🌮"}
+    return { "message" : "🌮 Are you hungry for some Tacos?! 🌮"}
 
 # Add DBSessionMiddleware to handle database sessions
 app.add_middleware(DBSessionMiddleware, db_url=database_settings.SQLALCHEMY_DATABASE_URL)

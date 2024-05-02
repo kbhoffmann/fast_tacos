@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 
 # from .base import env
 from .database import database_settings, DatabaseSettings
