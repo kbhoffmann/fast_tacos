@@ -1,9 +1,8 @@
-from pydantic import BaseSettings
+from settings import BaseSettings
 from typing import Any
 from .base import env
 
 class DatabaseSettings(BaseSettings):
-#   SQLALCHEMY_DATABASE_URL: str = ("postgresql://postgres:password@taco_db:5432/taco_database")
         SQLALCHEMY_DATABASE_URL: str = ("postgresql://{}:{}@{}:{}/{}".format(
             env.str("PG_USERNAME"),
             env.str("PG_PASSWORD"),

@@ -1,0 +1,25 @@
+name: fast_tacos
+services:
+  taco_web:
+    container_name: taco_web
+    build:
+      context: ../
+      dockerfile: setup/Dockerfile
+    ports: 
+      - "8000:8000"
+    volumes:
+      - ..:/app
+    depends_on:
+      - taco_db
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@taco_db:5432/fast_tacos_db
+
+  taco_db:
+    image: postgres:10
+    container_name: taco_db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=fast_tacos_db
+    ports:
+      - "5432:5432"
