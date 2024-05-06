@@ -8,10 +8,12 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR /app
 
 # Copy the Pipfile and Pipfile.lock to the container
-COPY Pipfile Pipfile.lock /app/
+COPY Pipfile
+COPY Pipfile.lock
 
 # Install dependencies
-RUN pip install pipenv && pipenv install --deploy --system
+RUN pip install pipenv
+RUN pipenv install --system --deploy --dev
 
 COPY /app ./app
 COPY /setup ./setup
